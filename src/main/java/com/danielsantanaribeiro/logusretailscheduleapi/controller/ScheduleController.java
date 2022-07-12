@@ -1,19 +1,22 @@
 package com.danielsantanaribeiro.logusretailscheduleapi.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/schedules")
 public class ScheduleController {
 	
-	@GetMapping
-	public String listar (){
+	@RequestMapping(method = RequestMethod.GET)
+	public String listar() {
 		return "Olá, mundo!";
 	}
+
+	@RequestMapping(method = RequestMethod.GET, params = "nome")
+	public String listar(@RequestParam(value = "nome") String nome) {
+		return "Olá, " + nome;
+	}
+
 }
