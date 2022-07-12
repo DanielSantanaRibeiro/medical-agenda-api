@@ -4,17 +4,23 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
+@Table(name = "schedule")
 public class Schedule implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -23,7 +29,6 @@ public class Schedule implements Serializable {
 	private String doctor_crm;
 	private String doctor_name;
 	
-	@Column(name="DATE_CREATED")
     @Temporal(TemporalType.TIMESTAMP)
 	private Date schedule_datetime;
 	
