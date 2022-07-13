@@ -1,40 +1,47 @@
 package com.danielsantanaribeiro.logusretailscheduleapi.controller;
 
-import java.util.Date;
-import java.util.List;
+import java.net.URI;
+import java.time.LocalDate;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.danielsantanaribeiro.logusretailscheduleapi.model.Schedule;
-import com.danielsantanaribeiro.logusretailscheduleapi.repository.ScheduleRepository;
+import com.danielsantanaribeiro.logusretailscheduleapi.services.ScheduleService;
 
 @RestController
 @RequestMapping("/schedules")
 public class ScheduleController {
 	
 	@Autowired
-	private ScheduleRepository scheduleRepository;
+	private ScheduleService scheduleService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public List<Schedule> scheduleList() {
-		return scheduleRepository.findAll();		
+	public ResponseEntity<?> scheduleList() {
+		
+		return ResponseEntity.ok(scheduleService.findAll());				
 	}
 
 	@RequestMapping(method = RequestMethod.GET, params = "date")
-	public String listar(@RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date) {		
+	public String listar(@RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {	
 		return "Data informada: " + date;
 	}
 	
 	@PostMapping
-	public Schedule createSchedule (@RequestBody Schedule schedule){		
-		return scheduleRepository.save(schedule);
+	public ResponseEntity<?> createSchedule (@RequestBody @Valid Schedule schedule){		
+		schedule = scheduleService.save(schedule);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(schedule).toUri();
+		return ResponseEntity.created(uri).build();
 	}
 	
 	
