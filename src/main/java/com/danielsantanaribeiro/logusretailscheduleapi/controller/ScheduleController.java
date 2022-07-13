@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,13 @@ public class ScheduleController {
 	@RequestMapping(method = RequestMethod.GET, params = "date")
 	public String listar(@RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {	
 		return "Data informada: " + date;
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Schedule> scheduleById(@PathVariable Integer id) {	
+		Long idLong = Long.valueOf(id);
+		Schedule obj = scheduleService.findById(idLong);
+		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
