@@ -59,11 +59,11 @@ public class ScheduleController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, params = {"name", "date"})
-	public List<Schedule> getScheduleByNameAndByDate (
+	public ResponseEntity<List<Schedule>> getScheduleByNameAndDate (
 			@RequestParam(value="name") String name,
 			@RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {				
-		
-		return scheduleService.findByPatientNameAndDate(name, date);
+		List<Schedule> listOfSchedules = scheduleService.findByPatientNameAndDate(name, date);
+		return ResponseEntity.ok().body(listOfSchedules);
 	}
 	
 	

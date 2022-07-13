@@ -31,7 +31,7 @@ public class ScheduleService {
 
 	public Schedule save(Schedule newSchedule) {
 		newSchedule.setId(null);
-		// Cannot save a schedule for a patient who already have schedule on the new
+		//TODO - A given Patient cannot schedule two medical appointment at the same day 
 		// schedule date
 		/*
 		 * SimpleDateFormat ymdFormat = new SimpleDateFormat("yyyy-MM-dd"); String
