@@ -1,7 +1,10 @@
 package com.danielsantanaribeiro.logusretailscheduleapi.controller;
 
 import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -28,29 +31,39 @@ public class ScheduleController {
 	private ScheduleService scheduleService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<?> scheduleList() {
+	public ResponseEntity<List<Schedule>> scheduleList() {
 		
 		return ResponseEntity.ok(scheduleService.findAll());				
 	}
 
 	@RequestMapping(method = RequestMethod.GET, params = "date")
 	public String listar(@RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {	
+		//TODO - return schedules by date
 		return "Data informada: " + date;
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Schedule> scheduleById(@PathVariable Integer id) {	
 		Long idLong = Long.valueOf(id);
-		//TODO - NOT FOUND exception 
+		//TODO - NOT FOUND exception - Use exception handler
 		Schedule obj = scheduleService.findById(idLong);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
 	public ResponseEntity<?> createSchedule (@RequestBody @Valid Schedule schedule){		
+		// TODO - Exception handler when is not possible to save
 		schedule = scheduleService.save(schedule);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(schedule.getId()).toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, params = {"name", "date"})
+	public List<Schedule> getScheduleByNameAndByDate (
+			@RequestParam(value="name") String name,
+			@RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {				
+		
+		return scheduleService.findByPatientNameAndDate(name, date);
 	}
 	
 	
