@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "schedule")
@@ -24,15 +26,21 @@ public class Schedule implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-		
-	private String patient_name;
-	private String doctor_crm;
-	private String doctor_name;
+	
+	@Column(nullable = false, name = "patient_name")
+	private String patientName;
+	@Column(nullable = false, name = "doctor_crm")
+	private String doctorCrm;
+	@Column(nullable = false, name = "doctor_name")
+	private String doctorName;
 	
     @Temporal(TemporalType.TIMESTAMP)
-	private Date schedule_datetime;
+    @Column(nullable = false, name = "schedule_datetime")
+	private Date scheduleDatetime;
 	
-	private Integer clinic_number;
+    @Column(nullable = false, name = "clinic_number")
+    @NotNull(message = "Clinic number is mandatory!")
+    private Integer clinicNumber;
 
 	public Long getId() {
 		return id;
@@ -42,44 +50,48 @@ public class Schedule implements Serializable {
 		this.id = id;
 	}
 
-	public String getPatient_name() {
-		return patient_name;
+	public String getPatientName() {
+		return patientName;
 	}
 
-	public void setPatient_name(String patient_name) {
-		this.patient_name = patient_name;
+	public void setPatientName(String patientName) {
+		this.patientName = patientName;
 	}
 
-	public String getDoctor_crm() {
-		return doctor_crm;
+	public String getDoctorCrm() {
+		return doctorCrm;
 	}
 
-	public void setDoctor_crm(String doctor_crm) {
-		this.doctor_crm = doctor_crm;
+	public void setDoctorCrm(String doctorCrm) {
+		this.doctorCrm = doctorCrm;
 	}
 
-	public String getDoctor_name() {
-		return doctor_name;
+	public String getDoctorName() {
+		return doctorName;
 	}
 
-	public void setDoctor_name(String doctor_name) {
-		this.doctor_name = doctor_name;
+	public void setDoctorName(String doctorName) {
+		this.doctorName = doctorName;
 	}
 
-	public Date getSchedule_datetime() {
-		return schedule_datetime;
+	public Date getScheduleDatetime() {
+		return scheduleDatetime;
 	}
 
-	public void setSchedule_datetime(Date schedule_datetime) {
-		this.schedule_datetime = schedule_datetime;
+	public void setScheduleDatetime(Date scheduleDatetime) {
+		this.scheduleDatetime = scheduleDatetime;
 	}
 
-	public Integer getClinic_number() {
-		return clinic_number;
+	public Integer getClinicNumber() {
+		return clinicNumber;
 	}
 
-	public void setClinic_number(Integer clinic_number) {
-		this.clinic_number = clinic_number;
+	public void setClinicNumber(Integer clinicNumber) {
+		this.clinicNumber = clinicNumber;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	@Override
@@ -98,7 +110,5 @@ public class Schedule implements Serializable {
 		Schedule other = (Schedule) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
 
 }
