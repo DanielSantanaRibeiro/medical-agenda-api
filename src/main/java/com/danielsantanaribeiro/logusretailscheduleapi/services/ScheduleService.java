@@ -1,10 +1,12 @@
 package com.danielsantanaribeiro.logusretailscheduleapi.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.danielsantanaribeiro.logusretailscheduleapi.model.Schedule;
@@ -19,6 +21,11 @@ public class ScheduleService {
 	public List<Schedule> findAll(){
 		//need to return orderByScheduleDateTime
 		return scheduleRepository.findAll(Sort.by(Direction.ASC, "scheduleDatetime"));
+	}
+	
+	public Schedule findById(Long id) {	
+		Optional<Schedule> obj = scheduleRepository.findById(id); 
+		return obj.orElse(null);
 	}
 	
 	public Schedule save(Schedule newSchedule) {
