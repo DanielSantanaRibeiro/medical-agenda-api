@@ -29,6 +29,7 @@ public class ScheduleService {
 	}
 	
 	public Schedule save(Schedule newSchedule) {
+		newSchedule.setId(null);
 		//Cannot save a schedule for a patient who already have schedule on the new schedule date 
 		/*
 		 * SimpleDateFormat ymdFormat = new SimpleDateFormat("yyyy-MM-dd"); String

@@ -41,6 +41,7 @@ public class ScheduleController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Schedule> scheduleById(@PathVariable Integer id) {	
 		Long idLong = Long.valueOf(id);
+		//TODO - NOT FOUND exception 
 		Schedule obj = scheduleService.findById(idLong);
 		return ResponseEntity.ok().body(obj);
 	}
@@ -48,7 +49,7 @@ public class ScheduleController {
 	@PostMapping
 	public ResponseEntity<?> createSchedule (@RequestBody @Valid Schedule schedule){		
 		schedule = scheduleService.save(schedule);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(schedule).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(schedule.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
