@@ -1,7 +1,8 @@
 package com.danielsantanaribeiro.logusretailscheduleapi.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -34,9 +35,11 @@ public class Schedule implements Serializable {
 	@Column(nullable = false, name = "doctor_name")
 	private String doctorName;
 	
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false, name = "schedule_datetime")
-	private Date scheduleDatetime;
+    @Column(nullable = false, name = "schedule_date", columnDefinition = "DATE")
+	private LocalDate scheduleDate;
+    
+    @Column(nullable = false, name = "schedule_time", columnDefinition = "TIME")
+	private LocalTime scheduleTime;
 	
     @Column(nullable = false, name = "clinic_number")
     @NotNull(message = "Clinic number is mandatory!")
@@ -74,12 +77,20 @@ public class Schedule implements Serializable {
 		this.doctorName = doctorName;
 	}
 
-	public Date getScheduleDatetime() {
-		return scheduleDatetime;
+	public LocalDate getScheduleDate() {
+		return scheduleDate;
 	}
 
-	public void setScheduleDatetime(Date scheduleDatetime) {
-		this.scheduleDatetime = scheduleDatetime;
+	public void setScheduleDate(LocalDate scheduleDate) {
+		this.scheduleDate = scheduleDate;
+	}
+
+	public LocalTime getScheduleTime() {
+		return scheduleTime;
+	}
+
+	public void setScheduleTime(LocalTime scheduleTime) {
+		this.scheduleTime = scheduleTime;
 	}
 
 	public Integer getClinicNumber() {
