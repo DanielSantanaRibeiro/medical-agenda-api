@@ -50,7 +50,6 @@ public class ScheduleController {
 	
 	@PostMapping
 	public ResponseEntity<?> createSchedule (@RequestBody @Valid Schedule schedule){		
-		// TODO - Exception handler when is not possible to save
 		schedule = scheduleService.save(schedule);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(schedule.getId()).toUri();
 		return ResponseEntity.created(uri).build();
