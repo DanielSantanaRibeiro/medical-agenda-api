@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.danielsantanaribeiro.logusretailscheduleapi.model.Schedule;
 import com.danielsantanaribeiro.logusretailscheduleapi.repository.ScheduleRepository;
 import com.danielsantanaribeiro.logusretailscheduleapi.services.exceptions.MaxNumberOfScheduleByDayException;
+import com.danielsantanaribeiro.logusretailscheduleapi.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class ScheduleService {
@@ -26,14 +27,11 @@ public class ScheduleService {
 
 	public Schedule findById(Long id) {
 		Optional<Schedule> obj = scheduleRepository.findById(id);
-		//TODO THROW OBJECTNOTFOUND EXCEPTION
-		return obj.orElse(null);
+		return obj.orElseThrow(()-> new ObjectNotFoundException("Object not found for ID: " + id));
 	}
 
 	public Schedule save(Schedule newSchedule) {
 		newSchedule.setId(null);
-		//TODO - A given Patient cannot schedule two medical appointment at the same day 
-		// schedule date
 		List<Schedule> patientScheduleList = scheduleRepository.findByPatientNameAndScheduleDate(newSchedule.getPatientName(), newSchedule.getScheduleDate());
 		if(patientScheduleList.size() > 0) {
 			throw new MaxNumberOfScheduleByDayException("Patient reached the maximum number of medical appointment by day");
