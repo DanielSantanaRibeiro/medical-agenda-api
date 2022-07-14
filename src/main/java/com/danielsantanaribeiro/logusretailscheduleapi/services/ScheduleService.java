@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.danielsantanaribeiro.logusretailscheduleapi.model.Schedule;
 import com.danielsantanaribeiro.logusretailscheduleapi.repository.ScheduleRepository;
+import com.danielsantanaribeiro.logusretailscheduleapi.services.exceptions.MaxNumberOfScheduleByDayException;
 
 @Service
 public class ScheduleService {
@@ -19,13 +20,13 @@ public class ScheduleService {
 	private ScheduleRepository scheduleRepository;
 
 	public List<Schedule> findAll() {
-		// need to return orderByScheduleDateTime
 		return scheduleRepository.findAll(Sort.by(Direction.ASC, "scheduleDate")
 				.and(Sort.by(Direction.ASC, "scheduleTime")));	
 	}
 
 	public Schedule findById(Long id) {
 		Optional<Schedule> obj = scheduleRepository.findById(id);
+		//TODO THROW OBJECTNOTFOUND EXCEPTION
 		return obj.orElse(null);
 	}
 
@@ -33,13 +34,10 @@ public class ScheduleService {
 		newSchedule.setId(null);
 		//TODO - A given Patient cannot schedule two medical appointment at the same day 
 		// schedule date
-		/*
-		 * SimpleDateFormat ymdFormat = new SimpleDateFormat("yyyy-MM-dd"); String
-		 * ymdScheduleDate = ymdFormat.format(newSchedule.getScheduleDatetime());
-		 * List<Schedule> returnList = findByNameAndDate(newSchedule.getPatientName(),
-		 * ymdScheduleDate); if(returnList.isEmpty()) { //TODO RETURN ERROR return null;
-		 * }
-		 */
+		List<Schedule> patientScheduleList = scheduleRepository.findByPatientNameAndScheduleDate(newSchedule.getPatientName(), newSchedule.getScheduleDate());
+		if(patientScheduleList.size() > 0) {
+			throw new MaxNumberOfScheduleByDayException("Patient reached the maximum number of medical appointment by day");
+		}		
 		return scheduleRepository.save(newSchedule);
 	}
 
