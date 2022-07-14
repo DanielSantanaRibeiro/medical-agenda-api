@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Doctor implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -26,6 +28,7 @@ public class Doctor implements Serializable{
 	private String crm;
 	
 	@OneToMany(mappedBy = "doctor")
+	@JsonIgnore
 	private List<Schedule> doctorSchedule;
 	
 	public Doctor() {
