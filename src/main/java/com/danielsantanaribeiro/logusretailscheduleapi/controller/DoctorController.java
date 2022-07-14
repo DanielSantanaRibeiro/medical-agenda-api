@@ -25,7 +25,7 @@ public class DoctorController {
 	private DoctorService doctorService;
 	
 	@GetMapping
-	public ResponseEntity<List<Doctor>> findAll(){
+	public ResponseEntity<List<Doctor>> doctorList(){
 		return ResponseEntity.ok().body(doctorService.findAll());
 	}
 	
