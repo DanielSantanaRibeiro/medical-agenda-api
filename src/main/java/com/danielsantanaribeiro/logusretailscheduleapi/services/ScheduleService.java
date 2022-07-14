@@ -42,11 +42,8 @@ public class ScheduleService {
 		return scheduleRepository.save(newSchedule);
 	}
 
-	public List<Schedule> findByPatientNameAndDate(String patientName, LocalDate date) {
-		// return scheduleRepository.findByPatientNameAndScheduleDate(patientName,
-		// date);
-		//return scheduleRepository.findByScheduleDateAndPatientId(date, patientName);
-		return null;
+	public List<Schedule> findbyIdAndDate(Long patient_id, LocalDate date) {
+		return scheduleRepository.findByScheduleDateAndPatientId(date, patient_id);
 	}
 
 	public List<Schedule> findByPatientName(String patientName) {
