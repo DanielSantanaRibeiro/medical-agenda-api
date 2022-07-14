@@ -10,38 +10,56 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "schedule")
 public class Schedule implements Serializable {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(nullable = false, name = "patient_name")
-	private String patientName;
-	@Column(nullable = false, name = "doctor_crm")
-	private String doctorCrm;
-	@Column(nullable = false, name = "doctor_name")
-	private String doctorName;
-	
-    @Column(nullable = false, name = "schedule_date", columnDefinition = "DATE")
+
+	@Column(nullable = false, name = "schedule_date", columnDefinition = "DATE")
 	private LocalDate scheduleDate;
-    
-    @Column(nullable = false, name = "schedule_time", columnDefinition = "TIME")
+
+	@Column(nullable = false, name = "schedule_time", columnDefinition = "TIME")
 	private LocalTime scheduleTime;
+
+	@Column(nullable = false, name = "clinic_number")
+	@NotNull(message = "Clinic number is mandatory!")
+	private Integer clinicNumber;
+
+	@ManyToOne
+	@JoinColumn(name = "patient_id")	
+	private Patient patient;
 	
-    @Column(nullable = false, name = "clinic_number")
-    @NotNull(message = "Clinic number is mandatory!")
-    private Integer clinicNumber;
+	@ManyToOne
+	@JoinColumn(name = "doctor_id")
+	private Doctor doctor;
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
 
 	public Long getId() {
 		return id;
@@ -49,30 +67,6 @@ public class Schedule implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getPatientName() {
-		return patientName;
-	}
-
-	public void setPatientName(String patientName) {
-		this.patientName = patientName;
-	}
-
-	public String getDoctorCrm() {
-		return doctorCrm;
-	}
-
-	public void setDoctorCrm(String doctorCrm) {
-		this.doctorCrm = doctorCrm;
-	}
-
-	public String getDoctorName() {
-		return doctorName;
-	}
-
-	public void setDoctorName(String doctorName) {
-		this.doctorName = doctorName;
 	}
 
 	public LocalDate getScheduleDate() {
