@@ -35,24 +35,16 @@ public class ScheduleController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, params = "date")
-	public String listar(@RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {	
-		//TODO - return schedules by date
-		return "Data informada: " + date;
+	public ResponseEntity<List<Schedule>> findByDate(@RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {	
+		List<Schedule> listOfSchedulesByDate = scheduleService.findByDate(date);
+		return ResponseEntity.ok().body(listOfSchedulesByDate);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Schedule> scheduleById(@PathVariable Integer id) {	
 		Long idLong = Long.valueOf(id);
-		//TODO - NOT FOUND exception - Use exception handler
 		Schedule obj = scheduleService.findById(idLong);
 		return ResponseEntity.ok().body(obj);
-	}
-	
-	@PostMapping
-	public ResponseEntity<?> createSchedule (@RequestBody @Valid Schedule schedule){		
-		schedule = scheduleService.save(schedule);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(schedule.getId()).toUri();
-		return ResponseEntity.created(uri).build();
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, params = {"name", "date"})
@@ -63,5 +55,11 @@ public class ScheduleController {
 		return ResponseEntity.ok().body(listOfSchedules);
 	}
 	
+	@PostMapping
+	public ResponseEntity<?> createSchedule (@RequestBody @Valid Schedule schedule){		
+		schedule = scheduleService.save(schedule);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(schedule.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
 	
 }

@@ -48,7 +48,10 @@ public class ScheduleService {
 	}
 	
 	public List<Schedule> findByDate(LocalDate date) {
-		return scheduleRepository.findByScheduleDate(date);	
+		List<Schedule> listOfSchedules = scheduleRepository.findByScheduleDate(date);
+		if(listOfSchedules.isEmpty()) 
+			throw new ObjectNotFoundException("Object list not found for date: " + date);
+		return listOfSchedules;
 	}
 	
 
