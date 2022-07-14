@@ -21,38 +21,44 @@ public class ScheduleService {
 	private ScheduleRepository scheduleRepository;
 
 	public List<Schedule> findAll() {
-		return scheduleRepository.findAll(Sort.by(Direction.ASC, "scheduleDate")
-				.and(Sort.by(Direction.ASC, "scheduleTime")));	
+		return scheduleRepository
+				.findAll(Sort.by(Direction.ASC, "scheduleDate").and(Sort.by(Direction.ASC, "scheduleTime")));
 	}
 
 	public Schedule findById(Long id) {
 		Optional<Schedule> obj = scheduleRepository.findById(id);
-		return obj.orElseThrow(()-> new ObjectNotFoundException("Object not found for ID: " + id));
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Object not found for ID: " + id));
 	}
 
 	public Schedule save(Schedule newSchedule) {
 		newSchedule.setId(null);
-		List<Schedule> patientScheduleList = scheduleRepository.findByPatientNameAndScheduleDate(newSchedule.getPatientName(), newSchedule.getScheduleDate());
-		if(patientScheduleList.size() > 0) {
-			throw new MaxNumberOfScheduleByDayException("Patient reached the maximum number of medical appointment by day");
-		}		
+		List<Schedule> patientScheduleList = scheduleRepository
+				.findByScheduleDateAndPatientId(newSchedule.getScheduleDate(), newSchedule.getPatient().getId());
+		if (patientScheduleList.size() > 0) {
+			throw new MaxNumberOfScheduleByDayException(
+					"Patient reached the maximum number of medical appointment by day");
+		}
+
 		return scheduleRepository.save(newSchedule);
 	}
 
 	public List<Schedule> findByPatientNameAndDate(String patientName, LocalDate date) {
-		return scheduleRepository.findByPatientNameAndScheduleDate(patientName, date);
+		// return scheduleRepository.findByPatientNameAndScheduleDate(patientName,
+		// date);
+		//return scheduleRepository.findByScheduleDateAndPatientId(date, patientName);
+		return null;
 	}
-	
+
 	public List<Schedule> findByPatientName(String patientName) {
-		return scheduleRepository.findByPatientName(patientName);
+		// return scheduleRepository.findByPatientName(patientName);
+		return null;
 	}
-	
+
 	public List<Schedule> findByDate(LocalDate date) {
 		List<Schedule> listOfSchedules = scheduleRepository.findByScheduleDate(date);
-		if(listOfSchedules.isEmpty()) 
+		if (listOfSchedules.isEmpty())
 			throw new ObjectNotFoundException("Object list not found for date: " + date);
 		return listOfSchedules;
 	}
-	
 
 }
