@@ -56,6 +56,13 @@ public class ScheduleController {
 		return ResponseEntity.ok().body(listOfSchedules);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, params = "patient_name")
+	public ResponseEntity<List<Schedule>> getScheduleByName (
+			@RequestParam(value="patient_name") String patient_name) {		
+		List<Schedule> listOfSchedules = scheduleService.findByPatientName(patient_name);
+		return ResponseEntity.ok().body(listOfSchedules);
+	}
+	
 	@PostMapping
 	public ResponseEntity<?> createSchedule (@RequestBody @Valid Schedule schedule){		
 		schedule = scheduleService.save(schedule);

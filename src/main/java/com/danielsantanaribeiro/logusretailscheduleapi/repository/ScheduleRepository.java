@@ -11,8 +11,6 @@ import com.danielsantanaribeiro.logusretailscheduleapi.model.Schedule;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
-	List<Schedule> findByPatientNameAndScheduleDate(String patientName, LocalDate scheduleDate);
-
 	List<Schedule> findByPatientName(String name);
 	
 	List<Schedule> findByScheduleDate(LocalDate date);
